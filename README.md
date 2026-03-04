@@ -2,9 +2,11 @@
 
 RPA solution demo in Python with Spotify on Windows.
 
-> __TL;DR__ Use `pyautogui` package and keyboard shortcuts to achieve the goal. `opencv` based image matching provide vision aid only when needed. LLM implemented as a toy prototype.
+> __TL;DR__ Use `pyautogui` package and keyboard shortcuts to achieve the goal. `opencv` based image matching provide vision aid only when needed. LLM implemented as a concept verification only.
 
 Not vibe-coded, but consulted Gemini for ideas. Python structure and coding style is 100% myself.
+
+Foucsing on idea-verifying and targeting for production structure; maybe slightly overweighted as an ealy prototype, some implemtation may be redundant.
 
 ## Assumptions
 
@@ -28,6 +30,8 @@ For this task, keyboard shortcut is clear winner.
 OpenCV delivers reasonable result. LLM, using "fast" model like gpt-4o can hardly deliver advantage in absence of further refinement.
 
 Providing that the workflow is deterministic and UI is static, the OpenCV is expected to be sufficent.
+
+In result verification, LLM deems to be a reliable and flexible way.
 
 
 ## Features
