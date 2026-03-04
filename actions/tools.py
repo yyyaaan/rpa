@@ -96,12 +96,12 @@ class Tools:
             "Respond ONLY JSON object containing 'x' and 'y'. Example: {\"x\": 0.52, \"y\": 0.89}"
         )        
         
-        print(f"Ussing LLM to locate: '{target_element}'...") if self.debug else None
+        print(f"Using LLM to locate: '{target_element}'...") if self.debug else None
         
         try:    
             response = self.llm_client.chat.completions.create(
                 model=self.model,
-                response_format={"type": "json_object"}, # Forces the LLM to return strict JSON
+                response_format={"type": "json_object"},
                 messages=[
                     {
                         "role": "user",
@@ -113,7 +113,6 @@ class Tools:
                 ]
             )
             
-            # 4. Parse JSON and map back to the original screen dimensions
             result_str = response.choices[0].message.content
             result = loads(result_str)
             
@@ -129,6 +128,37 @@ class Tools:
             if self.debug:
                 print(f"LLM extraction failed: {e}")
             return (0, 0)
+
+    def check_results_with_llm(self, screenshot: Image):
+        """"ask llm to verify the results"""
+        _, _, img_str = self.__screenshot_to_base64(screenshot)
+
+        prompt = (
+            "based on the screenshot attached, "
+            "determine if Spotify App showing the album Göstan Parhaart, and playing one song."
+            "Respond in short sentence with a confidence level in percentage"
+        )        
+        
+        print(f"Using LLM to evaluate results") if self.debug else None
+        
+        try:    
+            response = self.llm_client.chat.completions.create(
+                model=self.model,
+                messages=[
+                    {
+                        "role": "user",
+                        "content": [
+                            {"type": "text", "text": prompt},
+                            {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{img_str}"}}
+                        ]
+                    }
+                ]
+            )
+            
+            return response.choices[0].message.content
+        except Exception as e:
+            return f"LLM evaluation failed. {e}"
+
 
     def __screenshot_to_base64(self, screenshot: Image, max_dim: int = 1024) -> str:
         """convert screenshot to base64, returns orig_width, orig_height, img_str"""
