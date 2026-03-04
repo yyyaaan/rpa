@@ -1,72 +1,82 @@
 """action set"""
-import os
-import time
 import pyautogui
+
+from os import system
+from random import uniform
+from time import sleep
+
+from .tools import Tools
 
 class Actions:
     """wrapping class for gui automation tasks"""
-    debug = True
+
     esclate_to_llm = False
+    threshold = 0.8
 
-    def __init__(self, delay: int = 10):
+    def __init__(self, delay: int = 9, vision_mode: bool = False, debug: bool = True):
         self.delay = delay
+        self.debug = debug
+        self.vision_mode = vision_mode
+        self.tools = Tools(self.delay, self.debug)
 
-    def __delay__(self):
-        print("delaying")
-        for i in range(self.delay):
-            print(self.delay - i)
-            time.sleep(1)
-        print(" ")
 
     def __wait_for_logged_in_spotify(self):
-        self.__delay__()
-        self.__delay__()
-        if self.debug:
-            pyautogui.screenshot('x_startup.png')
-        try:
-            login_btn = pyautogui.locateOnScreen('./assets/login_button.png', confidence=0.5)
-            if login_btn is not None:
-                raise Exception("Spotify must be logged in already.")
-        except:
-            pass
+        self.tools.delay_with_msg("starting spotify...")
+        self.tools.delay_with_msg("hold on... starting spotify...")
+        
+        pyautogui.screenshot('x_startup.png') if self.debug else None
+        screen = pyautogui.screenshot()
+        confidence, coord = self.tools.check_image_existence(screen, "./assets/login_button.png")
+        if confidence > self.threshold:
+            print("stopping")
+            pyautogui.click(coord)
+            pyautogui.alert(text='Spotify not logged in. Please copmlete login', title='Login Required', button='OK')
+            raise Exception("Spotify is not logged in. Please complete login and retry")
 
 
     def play_spotify_playlist(self, playlist_name):
         print(f"Opening Spotify to play: {playlist_name}")
-        
-        # startup
-        os.system("start spotify:")
+
+        if self.vision_mode:
+            pyautogui.alert(text='Automatcion will start with vision. Click OK to start.', title='Get Ready', button='OK')
+
+        # startup with system command
+        system("start spotify:")
         self.__wait_for_logged_in_spotify()
+
+        # interactive approach?
+        if self.vision_mode:
+            conf, coord = self.tools.check_image_existence(pyautogui.screenshot(), "./assets/home_header.png")
+            pyautogui.moveTo(*coord, duration=uniform(0.5, 2))
+            self.tools.delay_with_msg("let's try click on header", 3)
+            pyautogui.click(coord)
+            self.tools.delay_with_msg("clicked", 3)
 
         # search with hot key
         pyautogui.hotkey('ctrl', 'k')
-        self.__delay__()
-        pyautogui.write(playlist_name, interval=0.2)
-        if self.debug:
-            pyautogui.screenshot('x_searching.png')
+        self.tools.delay_with_msg("wait for search box show up")
+        pyautogui.write(playlist_name, interval=uniform(0.01, 0.5))
+        
+        pyautogui.screenshot('x_searching.png') if self.debug else None
 
         # shift-enter to play!
-        self.__delay__()
+        self.tools.delay_with_msg("wait for search results")
         pyautogui.hotkey('shift', 'enter')
         if self.debug:
             pyautogui.screenshot('x_playing.png')
 
         # open playlist
-        self.__delay__()
+        self.tools.delay_with_msg("prepare to show playlist")
         pyautogui.hotkey('enter')
 
+        # check results
+        self.tools.delay_with_msg("ready, prepare to verify results")
+        conf, coord = self.tools.check_image_existence(pyautogui.screenshot(), "./assets/expected_outcome.png")
+        if self.vision_mode:
+            pyautogui.moveTo(*coord, duration=uniform(0.5, 1.5))
+            pyautogui.alert(
+                text=f'We are {conf*100:.1f}% that the results are achieved',
+                title='Automation Completed',
+                button='OK'
+            )
 
-    def __no_run(self):
-        # wait a while after type, and it will be selected
-        # pyautogui.press('down')
-        time.sleep(self.delay)
-        pyautogui.press('enter')
-        if self.debug:
-            pyautogui.screenshot('x_playlist.png')
-
-        # Wait for the playlist page to render
-        # start playing... no shortcut???
-        time.sleep(self.delay)
-        pyautogui.press('enter')
-        if self.debug:
-            pyautogui.screenshot('x_playing.png')
