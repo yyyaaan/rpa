@@ -10,8 +10,8 @@ from .tools import Tools
 class Actions:
     """wrapping class for gui automation tasks"""
 
-    esclate_to_llm = False
     threshold = 0.8
+    vision_use_llm_over_opencv = False  # so far OpenCV >> LLM
 
     def __init__(self, delay: int = 9, vision_mode: bool = False, debug: bool = True):
         self.delay = delay
@@ -20,22 +20,8 @@ class Actions:
         self.tools = Tools(self.delay, self.debug)
 
 
-    def __wait_for_logged_in_spotify(self):
-        self.tools.delay_with_msg("starting spotify...")
-        self.tools.delay_with_msg("hold on... starting spotify...")
-        
-        pyautogui.screenshot('x_startup.png') if self.debug else None
-        screen = pyautogui.screenshot()
-        confidence, coord = self.tools.check_image_existence(screen, "./assets/login_button.png")
-        if confidence > self.threshold:
-            print("stopping")
-            pyautogui.click(coord)
-            pyautogui.alert(text='Spotify not logged in. Please copmlete login', title='Login Required', button='OK')
-            raise Exception("Spotify is not logged in. Please complete login and retry")
-
-
     def play_spotify_playlist(self, playlist_name):
-        print(f"Opening Spotify to play: {playlist_name}")
+        """the entry script"""
 
         if self.vision_mode:
             pyautogui.alert(text='Automatcion will start with vision. Click OK to start.', title='Get Ready', button='OK')
@@ -44,9 +30,12 @@ class Actions:
         system("start spotify:")
         self.__wait_for_logged_in_spotify()
 
-        # interactive approach?
+        # interactive approach that uses openCV and simple Alert
         if self.vision_mode:
-            conf, coord = self.tools.check_image_existence(pyautogui.screenshot(), "./assets/home_header.png")
+            if self.vision_use_llm_over_opencv:
+                coord = self.tools.get_coord_from_llm(pyautogui.screenshot(), "header search box")
+            else:
+                _, coord = self.tools.check_image_existence(pyautogui.screenshot(), "./assets/home_header.png")
             pyautogui.moveTo(*coord, duration=uniform(0.5, 2))
             self.tools.delay_with_msg("let's try click on header", 3)
             pyautogui.click(coord)
@@ -62,8 +51,7 @@ class Actions:
         # shift-enter to play!
         self.tools.delay_with_msg("wait for search results")
         pyautogui.hotkey('shift', 'enter')
-        if self.debug:
-            pyautogui.screenshot('x_playing.png')
+        pyautogui.screenshot('x_playing.png') if self.debug else None
 
         # open playlist
         self.tools.delay_with_msg("prepare to show playlist")
@@ -71,12 +59,31 @@ class Actions:
 
         # check results
         self.tools.delay_with_msg("ready, prepare to verify results")
-        conf, coord = self.tools.check_image_existence(pyautogui.screenshot(), "./assets/expected_outcome.png")
+        final_screenshot = pyautogui.screenshot()
+        conf, coord = self.tools.check_image_existence(final_screenshot, "./assets/expected_outcome.png")
+        result_opencv = f'OpenCV is {conf*100:.1f}% that the results are achieved'
+        result_llm = "LLM evaluation: " + self.tools.check_results_with_llm(final_screenshot)
+        print(result_opencv)
+        print(result_llm)
         if self.vision_mode:
             pyautogui.moveTo(*coord, duration=uniform(0.5, 1.5))
             pyautogui.alert(
-                text=f'We are {conf*100:.1f}% that the results are achieved',
+                text=result_opencv + "  " + result_llm,
                 title='Automation Completed',
                 button='OK'
             )
 
+
+    def __wait_for_logged_in_spotify(self):
+        """"utility to check if spotify is logged in"""
+        self.tools.delay_with_msg("starting spotify...")
+        self.tools.delay_with_msg("hold on... starting spotify...")
+        
+        pyautogui.screenshot('x_startup.png') if self.debug else None
+        screen = pyautogui.screenshot()
+        confidence, coord = self.tools.check_image_existence(screen, "./assets/login_button.png")
+        if confidence > self.threshold:
+            print("stopping")
+            pyautogui.click(coord)
+            pyautogui.alert(text='Spotify not logged in. Please copmlete login', title='Login Required', button='OK')
+            raise Exception("Spotify is not logged in. Please complete login and retry")
