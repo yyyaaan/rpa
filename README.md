@@ -21,6 +21,15 @@ pip install pyautogui opencv-python pyscreeze pillow numpy python-dotenv openai
 python main.py
 ```
 
+## Keyboard Shortcut, OpenCV and LLM
+
+For this task, keyboard shortcut is clear winner.
+
+OpenCV delivers reasonable result. LLM, using "fast" model like gpt-4o can hardly deliver advantage in absence of further refinement.
+
+Providing that the workflow is deterministic and UI is static, the OpenCV is expected to be sufficent.
+
+
 ## Features
 
 Mainly use keyboard shortcut to navigate the app with reasonable (maybe excessive) delay.
@@ -41,3 +50,9 @@ Experinmental implementation with LLM to locate button and conduct visual check,
 - Error handling and result check shall be greatly improved
 - Remote VM security to be enhanced, in terms of netowrking and authentication
 - LLM implementation to be reviewed carefully and use RBAC as much as possible
+
+If it will be rollout,
+- lint, styling and better parametrization
+- telemetry and logging (replacing image saving and print)
+- queue system implementation
+- retry logic with the whole flow

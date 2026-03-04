@@ -6,9 +6,11 @@ from io import BytesIO
 from json import loads
 from time import sleep
 
+from dotenv import load_dotenv
 from openai import OpenAI
 from PIL.Image import Image,  Resampling
 
+load_dotenv()
 
 class Tools:
     """utility class"""
@@ -19,7 +21,8 @@ class Tools:
         self.debug = debug
         try:
             self.llm_client = OpenAI()
-        except:
+        except Exception as e:
+            print("LLM client initiation failed", e)
             self.llm_client = None
 
     def delay_with_msg(self, msg: str = None, delay: int = None):
@@ -84,28 +87,18 @@ class Tools:
         use LLM multimodal to find coordinates for item describe in target_element
         return (centerX, centerY)
         """
-        orig_width, orig_height = screenshot.size
-        
-        # resize screenshot and to base64 string
-        max_dim = 1024
-        ratio = min(max_dim / orig_width, max_dim / orig_height)
-        new_size = (int(orig_width * ratio), int(orig_height * ratio))        
-        resized_img = screenshot.resize(new_size, Resampling.LANCZOS)
 
-        buffered = BytesIO()
-        resized_img.save(buffered, format="JPEG")
-        img_str = b64encode(buffered.getvalue()).decode("utf-8")
-        
-        # assemble request to llm
+        orig_width, orig_height, img_str = self.__screenshot_to_base64(screenshot)
+
         prompt = (
             f"Locate the '{target_element}' in this screenshot."
             "At best accuracy, return the center coordinates as relative percentages between 0.0 and 1.0. "
             "Respond ONLY JSON object containing 'x' and 'y'. Example: {\"x\": 0.52, \"y\": 0.89}"
-        )
+        )        
         
-        try:
-            print(f"Ussing LLM to locate: '{target_element}'...") if self.debug else None
-            
+        print(f"Ussing LLM to locate: '{target_element}'...") if self.debug else None
+        
+        try:    
             response = self.llm_client.chat.completions.create(
                 model=self.model,
                 response_format={"type": "json_object"}, # Forces the LLM to return strict JSON
@@ -136,3 +129,17 @@ class Tools:
             if self.debug:
                 print(f"LLM extraction failed: {e}")
             return (0, 0)
+
+    def __screenshot_to_base64(self, screenshot: Image, max_dim: int = 1024) -> str:
+        """convert screenshot to base64, returns orig_width, orig_height, img_str"""
+        orig_width, orig_height = screenshot.size
+
+        max_dim = 1024
+        ratio = min(max_dim / orig_width, max_dim / orig_height)
+        new_size = (int(orig_width * ratio), int(orig_height * ratio))        
+        resized_img = screenshot.resize(new_size, Resampling.LANCZOS)
+
+        buffered = BytesIO()
+        resized_img.save(buffered, format="JPEG")
+        img_str = b64encode(buffered.getvalue()).decode("utf-8")
+        return orig_width, orig_height, img_str
