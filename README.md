@@ -17,11 +17,12 @@ __A Windows Virtual Machine is highly recommended__ to simplify screen scaling a
 ## Quick Start
 
 ```
-# Bash or Command Prompt [not powershell]
-.\venv\Scripts\activate
-pip install pyautogui opencv-python pyscreeze pillow numpy python-dotenv openai
-python main.py
+# Bash
+source .venv/scripts/activate
+python main.py --delay 5 --debug
 ```
+
+First time run to install pacakges with `pip install pyautogui opencv-python pyscreeze pillow numpy python-dotenv openai`
 
 ## Keyboard Shortcut, OpenCV and LLM
 
@@ -56,6 +57,7 @@ Experinmental implementation with LLM to locate button and conduct visual check,
 - LLM implementation to be reviewed carefully and use RBAC as much as possible
 
 If it will be rollout,
+- package management, at minimal with piptools
 - lint, styling and better parametrization
 - telemetry and logging (replacing image saving and print)
 - queue system implementation
