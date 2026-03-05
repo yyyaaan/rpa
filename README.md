@@ -8,6 +8,8 @@ Not vibe-coded, but consulted Gemini for ideas. Python structure and coding styl
 
 Foucsing on idea-verifying and targeting for production structure; maybe slightly overweighted as an ealy prototype, some implemtation may be redundant.
 
+![Demo](assets/demo.gif)
+
 ## Assumptions
 
 Runing on Windowns 11, and Python 3.13 installation. Virtual environments recommended but not mandantory.
@@ -22,7 +24,7 @@ source .venv/scripts/activate
 python main.py --delay 5 --debug
 ```
 
-First time run to install pacakges with `pip install pyautogui opencv-python pyscreeze pillow numpy python-dotenv openai`
+First time run to install pacakges with `pip install -r requirements.txt`. The dependency tree is derived from `pip install pyautogui opencv-python pyscreeze pillow numpy python-dotenv openai`.
 
 ## Keyboard Shortcut, OpenCV and LLM
 
