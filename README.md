@@ -1,10 +1,10 @@
 # rpa
 
-RPA solution demo in Python with Spotify on Windows.
+RPA solution demo in Python with Spotify on Windows. Not vibe-coded, but AI-empowered. Python structure and coding style is 100% myself.
 
 > __TL;DR__ Use `pyautogui` package and keyboard shortcuts to achieve the goal. `opencv` based image matching provide vision aid only when needed. LLM implemented as a concept verification only.
 
-Not vibe-coded, but consulted Gemini for ideas. Python structure and coding style is 100% myself.
+![Demo](assets/demo.gif)
 
 Foucsing on idea-verifying and targeting for production structure; maybe slightly overweighted as an ealy prototype, some implemtation may be redundant.
 
@@ -22,7 +22,7 @@ source .venv/scripts/activate
 python main.py --delay 5 --debug
 ```
 
-First time run to install pacakges with `pip install pyautogui opencv-python pyscreeze pillow numpy python-dotenv openai`
+First time run to install pacakges with `pip install -r requirements.txt`. The dependency tree is derived from `pip install pyautogui opencv-python pyscreeze pillow numpy python-dotenv openai`.
 
 ## Keyboard Shortcut, OpenCV and LLM
 
