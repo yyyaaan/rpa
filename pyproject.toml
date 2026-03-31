@@ -1,0 +1,13 @@
+[project]
+name = "agent-automation"
+version = "0.1.0"
+description = "Scalable Agentic Browser Automation"
+requires-python = ">=3.11"
+dependencies = [
+    "browser-use>=0.1.0",
+    "pydantic-settings",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
