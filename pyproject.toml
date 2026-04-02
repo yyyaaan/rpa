@@ -1,11 +1,11 @@
 [project]
-name = "agent-automation"
+name = "browser-automation"
 version = "0.1.0"
 description = "Scalable Agentic Browser Automation"
-requires-python = ">=3.11"
+requires-python = ">=3.14"
 dependencies = [
-    "browser-use>=0.1.0",
-    "pydantic-settings",
+    "browser-use>=0.12.6",
+    "pydantic-settings>=2.13.1",
 ]
 
 [build-system]
