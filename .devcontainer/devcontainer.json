@@ -1,10 +1,9 @@
 {
-    "name": "rpa-devcontainer",
- 	// "image": "mcr.microsoft.com/devcontainers/python:3-3.14-trixie",
+    "name": "rpa-dev",
     "build": { 
         "dockerfile": "Dockerfile" 
     },
-    "runArgs": ["--name", "rpa-devcontainer"],  // containerName is not supported without docker compose
+    "runArgs": ["--name", "devcontainer-${localWorkspaceFolderBasename}"],  // containerName is not supported without docker compose
     "workspaceFolder": "/workspace",
     "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
     // "features": { set in dockerfile
@@ -80,5 +79,5 @@
         "OLLAMA_HOST": "http://host.orb.internal:11434"
     },
     "forwardPorts": [],
-    "postCreateCommand": "sudo chown -R vscode:vscode /workspace/.venv /home/vscode/ && uv sync --all-extras"
+    "postCreateCommand": "sudo chown -R vscode:vscode /workspace/.venv /home/vscode/.local /home/vscode && uv sync --all-extras"
 }
