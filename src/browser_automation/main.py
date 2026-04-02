@@ -3,7 +3,8 @@ from os import getenv
 
 from browser_use import Agent, Browser, ChatGoogle, ChatOllama, ChatOpenAI
 from browser_use.llm import ChatDeepSeek
-from utils import get_browser_ip
+
+from browser_automation.utils import get_browser_ip
 
 LLM_OPTIONS = {
     "ollama": ChatOllama(model="llama3.1"),
