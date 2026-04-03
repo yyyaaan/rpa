@@ -1,4 +1,6 @@
-# rpa
+# rpa with `pyautogui` for Windows
+
+> The script may not work inside containers; it expects to see the Windows directly.
 
 RPA solution demo in Python with Spotify on Windows. Not vibe-coded, but AI-empowered. Python structure and coding style is 100% myself.
 
