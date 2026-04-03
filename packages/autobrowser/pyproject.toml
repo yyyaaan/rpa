@@ -1,5 +1,5 @@
 [project]
-name = "browser-automation"
+name = "autobrowser"
 version = "0.1.0"
 description = "Scalable Agentic Browser Automation"
 readme = "README.md"
@@ -10,7 +10,7 @@ dependencies = [
 ]
 
 [project.scripts]
-browser-automation = "browser_automation.main:main"
+autobrowser = "autobrowser.main:main"
 
 [build-system]
 requires = ["hatchling"]

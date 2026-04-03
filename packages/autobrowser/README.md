@@ -9,9 +9,9 @@ see root
 Quick start the dev env, by start the dev contaienr in VSCode (or others)
 
 ```
-uv run browser-automation
+uv run autobrowser
 # or
-uv run python -m browser_automation.mains
+uv run python -m autobrowser.main
 ```
 
 ```

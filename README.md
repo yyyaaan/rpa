@@ -7,7 +7,7 @@ Monorepo (`uv` workspace) with multiple modules, see `pyproject.toml` files in r
 ```
 uv sync --all-packages
 uv run autogui
-uv run browser_automation
+uv run autobrowser
 ```
 
 ## AutoGUI for direct control on windows apps, see /autogui
