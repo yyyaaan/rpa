@@ -1,0 +1,18 @@
+[project]
+name = "autogui"
+version = "1.0.0"
+description = "PyAutoGUI for Windows Desktop App Control"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "opencv-python",
+    "pillow",
+    "PyAutoGUI"
+]
+
+[project.scripts]
+autogui = "autogui.main:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

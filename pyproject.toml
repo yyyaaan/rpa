@@ -1,13 +1,7 @@
 [project]
-name = "browser-automation"
+name = "rpa-monorepo"
 version = "0.1.0"
-description = "Scalable Agentic Browser Automation"
 requires-python = ">=3.14"
-dependencies = [
-    "browser-use>=0.12.6",
-    "pydantic-settings>=2.13.1",
-]
 
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+[tool.uv.workspace]
+members = ["packages/*"]

@@ -79,5 +79,5 @@
         "OLLAMA_HOST": "http://host.orb.internal:11434"
     },
     "forwardPorts": [],
-    "postCreateCommand": "sudo chown -R vscode:vscode /workspace/.venv /home/vscode/.local /home/vscode && uv sync --all-extras"
+    "postCreateCommand": "sudo chown -R vscode:vscode /workspace/.venv /home/vscode/.local /home/vscode && uv sync --all-packages --all-extras"
 }
