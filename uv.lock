@@ -165,7 +165,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "browser-use", specifier = ">=0.12.6" },
+    { name = "browser-use" },
     { name = "pydantic-settings", specifier = ">=2.13.1" },
 ]
 

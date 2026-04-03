@@ -1,7 +1,6 @@
 # Robotic Process Automation
 
-There are two flavors provided
-
+Monorepo (`uv` workspace) with multiple modules, see `pyproject.toml` files in root and src folders
 
 ## AutoGUI for direct control on windows apps, see /autogui
 
