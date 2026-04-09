@@ -1,4 +1,12 @@
-# Robotic Process Automation
+
+---
+
+# Project move to MonoRepo at [yyyaaan/core](https://github.com/yyyaaan/core)
+
+
+### 
+
+## Robotic Process Automation
 
 > Please use dev container.
 
@@ -10,9 +18,9 @@ uv run autogui
 uv run autobrowser
 ```
 
-## AutoGUI for direct control on windows apps, see /autogui
+### AutoGUI for direct control on windows apps, see /autogui
 
-## Modern Browser Automation
+### Modern Browser Automation
 
 ```
 /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222 --user-data-dir=$HOME/Lab/z-debug-profile
